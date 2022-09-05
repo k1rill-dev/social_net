@@ -1,0 +1,10 @@
+{%extends 'twitter/base_accounts.html'%}
+{%block content%}
+    {%if user.profile_photo %}
+        <img class="img-fluid img-thumbnail rounded float-start" src="{{user.profile_photo.url}}" style="width:500px; margin-left: 35%;" >
+    {%endif%}
+    <p style="margin-left: 35%;">Имя: {{user.user.username}}</p>
+    <p style="margin-left: 35%;">Дата рождения: {{user.date_of_birth}}</p>
+    <p style="margin-left: 35%;">Посты: {{user.posts.count}}</p>
+    <a class="btn btn-primary" href="{%url 'subscribe' user.user.pk%}" role="button" style="width:500px; margin-left: 35%;">Подписаться</a>
+{%endblock%}

@@ -1,0 +1,111 @@
+{%extends 'twitter/base_accounts.html'%}
+{%block content%}
+<div class="col-12 col-md-3 pr-4 dont-move">
+    <h3 style="margin-left: 10%;">Профиль</h3>
+    <div class="card" style="width: 18rem; margin-left: 10%; transform:translate(0, 100);">
+        {%if user_profile.profile_photo%}
+      <img src="{{ user_profile.profile_photo.url }}" class="card-img-top" style="width: 18rem;">
+        {%endif%}
+      <div class="card-body">
+        <p class="card-text">Никнейм: {{user_profile.user.username}}</p>
+        <p class="card-text">Подписки: {{following}}</p>
+        <p class="card-text">Подписчики: {{followers}}</p>
+          <hr>
+        <a class="btn btn-primary" href="{% url 'add_post' %}" role="button">Написать пост</a>
+          <hr>
+        <a class="btn btn-primary" href="{% url 'profile_edit' %}" role="button">Редактировать профиль</a>
+      </div>
+    </div>
+</div>
+{%endblock%}
+{%block posts%}
+    <div class="col-12 col-md-6 scrollable">
+        <div style="margin-right: 5%;">
+        <h3>Посты</h3>
+   <div class="card">
+       {%for post in posts%}
+       <div>
+  <h5 class="card-header"><a href="{%url 'user_profile' post.author.pk%}">{{post.author.username}}</h5></a>
+  <div class="card-body">
+<!--    <h5 class="card-title">Special title treatment</h5>-->
+    <p class="card-text">{{post.content}}</p>
+      <hr>
+    <small class="card-text">{{post.publication_date}}</small>
+      <hr>
+        <div>
+            {%include 'twitter/add_like.html' with post_id=post.pk%}
+        </div>
+      <hr>
+    <p class="card-text"><a href="{{post.get_absolute_url}}" class="btn btn-primary">Подробнее...</a></p>
+  </div>
+
+           </div>
+       {%endfor%}
+{%if page_obj.has_other_pages%}
+       <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {%if page_obj.has_previous%}
+    <li class="page-item">
+      <a class="page-link" href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {%endif%}
+        {%for p in paginator.page_range%}
+			{% if page_obj.number == p%}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{p}}</a>
+                </li>
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                <li class="page-item" aria-current="page">
+				    <a class="page-link" href="?page={{p}}">{{p}}</a>
+			    </li>
+            {%endif%}
+        {%endfor%}
+      {%if page_obj.has_next%}
+      <a class="page-link" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+      {%endif%}
+    </li>
+  </ul>
+{%endif%}
+</nav>
+</div>
+    </div>
+        </div>
+{%endblock%}
+
+{%block trends%}
+<div class="col-12 col-md-3 pr-4 dont-move" >
+    <h3>Популярное</h3>
+    <div class="list-group" style="margin-right: 10%;">
+        {%for p in popular%}
+  <a href="{{p.get_absolute_url}}" class="list-group-item list-group-item-action" aria-current="true">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{p.author.username}}</h5>
+      <small>{{p.publication_date}}</small>
+    </div>
+    <p class="mb-1">{{p.content}}</p>
+<!--    <small>And some small print.</small>-->
+  </a>
+        {%endfor%}
+<!--  <a href="#" class="list-group-item list-group-item-action">-->
+<!--    <div class="d-flex w-100 justify-content-between">-->
+<!--      <h5 class="mb-1">List group item heading</h5>-->
+<!--      <small class="text-muted">3 days ago</small>-->
+<!--    </div>-->
+<!--    <p class="mb-1">Some placeholder content in a paragraph.</p>-->
+<!--    <small class="text-muted">And some muted small print.</small>-->
+<!--  </a>-->
+<!--  <a href="#" class="list-group-item list-group-item-action">-->
+<!--    <div class="d-flex w-100 justify-content-between">-->
+<!--      <h5 class="mb-1">List group item heading</h5>-->
+<!--      <small class="text-muted">3 days ago</small>-->
+<!--    </div>-->
+<!--    <p class="mb-1">Some placeholder content in a paragraph.</p>-->
+<!--    <small class="text-muted">And some muted small print.</small>-->
+<!--  </a>-->
+</div>
+</div>
+{%endblock%}

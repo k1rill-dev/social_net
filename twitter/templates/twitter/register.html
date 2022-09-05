@@ -1,0 +1,16 @@
+{%extends 'twitter/base_accounts.html'%}
+{%block content%}
+<form method="post">
+    {%csrf_token%}
+    {{form.as_p}}
+    {% if messages %}
+        	{% for message in messages %}
+          	<div class="alert alert-{{ message.tags }}">
+            	{{ message }}
+          	</div>
+        	{% endfor %}
+    {% endif %}
+    <p>
+    <button type="submit" class="btn btn-primary">Регистрация</button></p>
+</form>
+{%endblock%}

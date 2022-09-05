@@ -1,0 +1,28 @@
+{%extends 'twitter/base_accounts.html'%}
+{%block content%}
+<div>
+    <p class="text-start fs-4 fw-normal" style="margin-left: 8%">{{post.content}}</p>
+    <p class="position-relative fw-light fs-5" style="margin-left: 8%">{{post.author}}</p>
+    <p class="position-relative fw-light fs-6" style="margin-left: 8%;">{{post.publication_date}}</p>
+    <div style="margin-left: 8%">{%include 'twitter/add_like.html' with post_id=post.pk%}</div>
+</div>
+<div>
+<ul class="media-list" style="margin-left: 8%;">
+    {%for com in comments%}
+    <p class="media">
+      <div class="media-body">
+        <div class="media-heading">
+          <div class="author">{{com.author}}</div>
+            <div class="metadata">
+              <span class="date">{{com.publication_date}}</span>
+            </div>
+          </div><div class="media-text text-justify">{{com.content}}</div>
+          {%endfor%}
+        <form method="post" style="width: 400px;">
+            {% csrf_token %}
+            {{form}}
+            <button class="btn btn-primary" type="submit">Написать комментарий</button>
+        </form>
+    </div>
+</div>
+{%endblock%}

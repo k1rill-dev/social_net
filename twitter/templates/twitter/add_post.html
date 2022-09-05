@@ -1,0 +1,10 @@
+{%extends 'twitter/base_accounts.html'%}
+{% load crispy_forms_tags %}
+{%block content%}
+    <h3>Добавить пост</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button class="btn btn-primary" type="submit">Создать пост</button>
+    </form>
+{%endblock%}

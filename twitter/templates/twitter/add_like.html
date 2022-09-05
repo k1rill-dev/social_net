@@ -1,0 +1,38 @@
+{% load like_tag %}
+{% is_like post_id as is_liked_bool%}
+{% count_likes post_id as like_counter %}
+
+{% if is_liked_bool %}
+    {% post_likes_id post_id as post_likes_id %}
+{%endif%}
+
+{%comment%}
+<form action="{%if not is_liked_bool %}{%url 'add_like'%}{%else%}{%url 'remove_like'%}{%endif%}" method="post">
+{%endcomment%}
+
+
+<form {%if not is_liked_bool %}
+      action="{%url 'add_like'%}"
+      class="add-remove-like add-post-like"
+      {%else%}
+      action="{%url 'remove_like'%}"
+      class="add-remove-like remove-post-like"
+      {%endif%} method="post">
+    {%csrf_token%}
+
+    <input type="hidden" name="post_id" value="{{post_id}}">
+    <input type="hidden" name="user_id" value="{%if user.is_authenticated%}{{request.user.id}}{%else%}None{%endif%}">
+    <input type="hidden" name="url_from_post" value="{{request.path}}">
+
+    {%if is_liked_bool%}
+        <input type="hidden" name="post_likes_id" value="{{post_likes_id}}">
+    {%endif%}
+<button type="submit" class="btn btn-danger">
+        {%if not is_liked_bool%}
+            <i class="fi-xnluxl-heart"></i>
+        {%else%}
+            <i class="fi-xnluxl-heart-solid"></i>
+        {%endif%}
+        <span class="likes-qty">{{like_counter}}</span>
+    </button>
+</form>
